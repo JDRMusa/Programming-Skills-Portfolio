@@ -386,7 +386,9 @@ def mainmenu():
                         elif confirmation == "N" or confirmation == "No":
                             TypeEffectPrint("""\nNo confirmed.
                             \nThank you for using the Vend-OS, Have a nice day!""")
-                            break
+                        #This cleans the console
+                            os.system('cls')
+                            sys.exit(0)
                         else:
                             TypeEffectPrint("\nNo valid option was given, please try again...")
                             #Safety measure when mistype
@@ -404,8 +406,8 @@ def mainmenu():
         elif mainchoice == "4":
             TypeEffectPrint("Shutting down, thank you for choosing VEND-OS...")
             time.sleep(0.5)
-        #This properly stops the program from interacting with the os.
             os.system('cls')
+        #This stops the whole program
             sys.exit(0)
         #Return to menu
         else:
