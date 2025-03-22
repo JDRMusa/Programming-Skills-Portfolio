@@ -46,6 +46,7 @@ itemlist = 0
 inv={}
 Balance = 0
 itemchosen = 0
+password = "123"
 
 #The following was used but stopped after it kept giving troubles
 #This is used to type out text faster with typewriter effect, used in the title screen
@@ -113,7 +114,7 @@ def moneyin():
                 TotalMoney = CurrentMoney + Money
                 print('\n',Money,'AED is inserted, Total credits is', TotalMoney)
                 CurrentMoney = TotalMoney
-                moremoney = input("\n Add more? Y or N: ").capitalize()
+                moremoney = input("\n Add more? Enter Y for more or enter any key to go back: ").capitalize()
                 if moremoney == "Y":
                     continue
                 else:
@@ -157,7 +158,7 @@ def checkout():
         Balance = round ((CurrentMoney - CurrentTotal), 2)
         print("\nYou don't have enough money to purchase the item.")
         print('Please insert the more credits')
-        print(f'You need another {abs(Balance)}AED to buy the item/s.')
+        print(f'\nYou need another {abs(Balance)}AED to buy the item/s.')
         mainmenu()
     else: #This is when the money is enough or more than the total
         Balance = round ((CurrentMoney - CurrentTotal), 2)
@@ -226,12 +227,12 @@ def mainmenu():
     while mainchoice != 4:
         if mainchoice == "1":
             category = (input("""
-            Select a category
+          Select a category
                   
-            1.Drinks
-            2.Snacks
-            3.Medical
-            4.Utility
+          1.Drinks
+          2.Snacks
+          3.Medical
+          4.Utility
                   
     Choice: """))
             if category == "1":
@@ -240,56 +241,27 @@ def mainmenu():
                 # printing a blank space
                 print(" ")
                 print(cc)
-                #Confirmation code
-                buy = input('\nBuy something? Y for yes and N for no, remember to put credits: ').capitalize()
-                if buy == "Y": 
-                    buying()
-                elif buy == "N":
-                    mainmenu()
-                #Invalid Option
-                else:
-                    invopt()
-                    continue
+                #Buying code
+                buying()
                 #Same code with 3 more iterations
             if category == "2":
                 # Like % is used to select data in Category that starts with S
                 cc = pd.read_sql_query("SELECT * from UtilityApp WHERE Category Like'S%'",con)
                 print(" ")
                 print(cc)
-                buy = input('\nBuy something? Y for yes and N for no, remember to put credits:').capitalize()
-                if buy == "Y": 
-                    buying()
-                elif buy == "N":
-                    mainmenu()
-                else:
-                    invopt()
-                    continue
+                buying()
             if category == "3":
                 # Like % is used to select data in Category that starts with M
                 cc = pd.read_sql_query("SELECT * from UtilityApp WHERE Category Like'M%'",con)
                 print(" ")
                 print(cc)
-                buy = input('\nBuy something? Y for yes and N for no, remember to put credits:').capitalize()
-                if buy == "Y": 
-                    buying()
-                elif buy == "N":
-                    mainmenu()
-                else:
-                    invopt()
-                    continue
+                buying()
             if category == "4":
                 # Like % is used to select data in Category that starts with U
                 cc = pd.read_sql_query("SELECT * from UtilityApp WHERE Category Like'U%'",con)
                 print(" ")
                 print(cc)
-                buy = input('\nBuy something? Y for yes and N for no, remember to put credits:').capitalize()
-                if buy == "Y": 
-                    buying()
-                elif buy == "N":
-                    mainmenu()
-                else:
-                    invopt()
-                    continue
+                buying()
             else:
                 invopt()
                 mainmenu()
@@ -299,27 +271,29 @@ def mainmenu():
             mainmenu()
         #Admin system
         elif mainchoice == "3":
+            global password
             #Placeholder password can be changed on the options
-            enteredpass="123"
-            enteredpass=TypeEffectInput("Enter the password (Warning: Password is case sensitive): ")
-            password= "123"
+            enteredpass=TypeEffectInput("\nEnter the password (Warning: Password is case sensitive): ")
+            #Put here as a stopgap for looping problems
+            stoploop= "no"
             #There's no limit put for the password
             while enteredpass!=password:
                 enteredpass=TypeEffectInput("\nTry again: ")
                 if enteredpass==password:
                  break
             #Access granted, options same as last one but with a few addtions
-            while enteredpass==password: 
+            while enteredpass==password and stoploop=="no": 
                 print("""
-                  1. Insert Item
-                  2. Update Item
-                  3. Delete Item
-                  4. View Stocks
-                  5. Change Password
-                  """)
+          1. Insert Item
+          2. Update Item
+          3. Delete Item
+          4. View Stocks
+          5. Change Password
+          """)
                 c=int(input("\nEnter your choice: "))
                 try:
-                #Insert now with Stocks
+                    
+                    #Insert now with Stocks
                     if (c == 1):
                         print (
                             """
@@ -364,16 +338,19 @@ def mainmenu():
                     elif (c == 4):
                         TypeEffectPrint("\nShowing stocks.....")
                         showstocks()
+
                     #Change Password
                     elif (c == 5):
                         password = input("\nInsert the new password: ")
+                        TypeEffectPrint("Password is now updated, going back to main menu.")
+                        mainmenu()
+                        
                     #When the input is invalid
                     else:
                         print("\nInvalid option")
-                        password=(input("\nRe-enter password to continue: "))
+                        enteredpass=(input("\nRe-enter password to continue: "))
                         continue
                     #This gives the user addtional options to do more
-                    
                     more=1
                     while more==1:
                         TypeEffectPrint("\nIs there anything else would you like to do?")
@@ -386,9 +363,11 @@ def mainmenu():
                         elif confirmation == "N" or confirmation == "No":
                             TypeEffectPrint("""\nNo confirmed.
                             \nThank you for using the Vend-OS, Have a nice day!""")
+                            stoploop="yes"
                         #This cleans the console
                             os.system('cls')
                             sys.exit(0)
+                            break
                         else:
                             TypeEffectPrint("\nNo valid option was given, please try again...")
                             #Safety measure when mistype
@@ -398,9 +377,8 @@ def mainmenu():
                             #Forced system exit after failing the second time
                             else:
                                 sys.exit(TypeEffectPrint("No valid option given, good bye. "))
-                    continue
-                    break
-                except ValueError: 
+                            break
+                except: 
                     print("\nPlease enter a number.")
         #Shutting down feature
         elif mainchoice == "4":
