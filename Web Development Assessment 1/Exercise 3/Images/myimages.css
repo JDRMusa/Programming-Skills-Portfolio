@@ -1,0 +1,35 @@
+#titleshift{
+    text-align: center;
+    size: 200%;
+    animation: RGB 5s infinite ;
+    color: red;
+}
+
+@keyframes RGB {
+    10% {color: orange;}
+    25% {color: yellow;;}
+    40% {color: green}
+    55% {color: blue}
+    70% {color: indigo}
+    85% {color: violet}
+}
+
+.frame {
+    padding: 0.5em;
+    border: 1px solid transparent;
+    margin: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.candara{
+    font-family: Candara, sans-serif;
+    color: antiquewhite;
+    background-color: black;
+}
+
+body{
+    background-image: url(AI\ vector\ art.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}

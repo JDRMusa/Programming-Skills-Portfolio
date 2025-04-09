@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Petrol Calculator.css" type="text/css">
+    <link rel="script" href="Petrol Calculator.js" type="text/javascript">
+    <title>Petrol Calculator</title>
+</head>
+<body>
+    <!-- This is the main interface -->
+    <div class="mainbox">
+        <!-- The header title-->
+        <h1>Petrol Cost Calculator</h1>
+        <!-- Price chosen that can be edited by the user-->
+        <div class="input-area">
+          <label for="price">Cost per Liter (AED):</label>
+          <input type="number" id="price" value="1.72" step="0.01" /> <!-- The default is 1.72 -->
+        </div>
+        <!-- Same thing as the first one-->
+        <!-- Liters that can be edited by the user -->
+        <div class="input-area">
+          <label for="amount">Liters Purchased:</label>
+          <input type="number" id="amount" value="0" step="0.1" />
+        </div>
+    
+        <!-- Calculate button -->
+        <button id="calculateButton">Calculate Total Cost</button>
+    
+        <!-- Result display -->
+        <p id="totalCost">Total Cost: AED 0.00</p>
+      </div>
+      <!-- Used to run the javascript-->
+      <script src="Petrol Calculator.js"></script>
+</body>
+</html>
